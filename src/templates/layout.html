@@ -31,6 +31,8 @@
                 <li><span class="bg-blue-800 px-2 py-1 rounded">Usuário: {{ username }}</span></li>
             {% elif current_user.is_authenticated and current_user.is_user %}
                 <li><a href="{{ url_for('home') }}" class="hover:text-blue-300 transition">Home</a></li>
+                <li><a href="{{ url_for('routes.user_vehicles') }}" class="hover:text-blue-300 transition">Veículos</a></li>
+                <li><a href="{{ url_for('routes.user_requests') }}" class="hover:text-blue-300 transition">Solicitações</a></li>
                 <li><a href="{{ url_for('security.logout') }}" class="hover:text-blue-300 transition">Logout</a></li>
                 <li><span class="bg-blue-800 px-2 py-1 rounded">Usuário: {{ username }}</span></li>
             {% else %}

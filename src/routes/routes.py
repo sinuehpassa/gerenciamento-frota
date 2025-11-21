@@ -45,3 +45,15 @@ def admin_users():
 @roles_accepted('user', 'admin', 'root')
 def home_users():
     return render_template("users_templates/home.html", message="Bem-vindo", username=current_user.username)
+
+@routes_bp.route("/users/veiculos", methods=['GET'])
+@login_required
+@roles_accepted('user', 'admin', 'root')
+def user_vehicles():
+    return render_template("users_templates/vehicles.html", username=current_user.username)
+
+@routes_bp.route("/users/solicitacoes", methods=['GET'])
+@login_required
+@roles_accepted('user', 'admin', 'root')
+def user_requests():
+    return render_template("users_templates/requests.html", username=current_user.username)
