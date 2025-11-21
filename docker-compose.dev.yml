@@ -3,10 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    container_name: docker_poo_dev # nome do contêiner
+    container_name: gerenciamento_frota_dev # nome do contêiner
     restart: unless-stopped
     ports:
-      - "8988:8988"
+      - "8989:8989"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     env_file:

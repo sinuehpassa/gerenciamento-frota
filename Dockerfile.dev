@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8988", "--access-logfile", "-", "run:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8989", "--access-logfile", "-", "run:app"]
