@@ -21,14 +21,21 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
             </button>
             <ul class="hidden md:flex gap-6 items-center text-white font-medium text-base" id="navbar-links">
-                {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('home') }}" class="hover:text-blue-300 transition">Home</a></li>
-                    <li><a href="/users" class="hover:text-blue-300 transition">About</a></li>
-                    <li><a href="{{ url_for('security.logout') }}" class="hover:text-blue-300 transition">Logout</a></li>
-                    <li><span class="bg-blue-800 px-2 py-1 rounded">Usuário: {{ username }}</span></li>
-                {% else %}
-                    <li><a href="{{ url_for('security.login') }}" class="hover:text-blue-300 transition">Login</a></li>
-                {% endif %}
+            {% if current_user.is_authenticated and current_user.is_admin %}
+                <li><a href="{{ url_for('home') }}" class="hover:text-blue-300 transition">Home</a></li>
+                <li><a href="#" class="hover:text-blue-300 transition">Veiculos</a></li>
+                <li><a href="#" class="hover:text-blue-300 transition">Solicitacoes</a></li>
+                <li><a href="#" class="hover:text-blue-300 transition">Relatórios</a></li>
+                <li><a href="#" class="hover:text-blue-300 transition">Usuarios</a></li>
+                <li><a href="{{ url_for('security.logout')}}" class="hover:text-blue-300 transition">Logout</a></li>
+                <li><span class="bg-blue-800 px-2 py-1 rounded">Usuário: {{ username }}</span></li>
+            {% elif current_user.is_authenticated and current_user.is_user %}
+                <li><a href="{{ url_for('home') }}" class="hover:text-blue-300 transition">Home</a></li>
+                <li><a href="{{ url_for('security.logout') }}" class="hover:text-blue-300 transition">Logout</a></li>
+                <li><span class="bg-blue-800 px-2 py-1 rounded">Usuário: {{ username }}</span></li>
+            {% else %}
+                <li><a href="{{ url_for('security.login') }}" class="hover:text-blue-300 transition">Login</a></li>
+            {% endif %}
             </ul>
         </div>
     </nav>
