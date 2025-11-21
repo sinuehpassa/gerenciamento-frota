@@ -5,6 +5,7 @@ from src.schemas.schema import VehicleSchema
 from src.services.admin_service import CarService
 from src.extensions import db
 from marshmallow import ValidationError
+from sqlalchemy.exc import IntegrityError
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -17,7 +18,9 @@ def register_vehicle():
         data = schema.load(request.get_json())
         service = CarService(db.session, current_user)
         vehicle = service.register_vehicle(data)
-    
         return jsonify({"message": "Veículo criado com sucesso!"}), 201
     except ValidationError as err:
         return jsonify({"errors": err.messages}), 400
+    except IntegrityError as err:
+        db.session.rollback()
+        return jsonify({"error": "Já existe um veículo cadastrado com essa placa."}), 409

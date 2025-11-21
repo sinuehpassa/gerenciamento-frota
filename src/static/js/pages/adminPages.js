@@ -68,6 +68,7 @@ function initRegisterVehicle() {
                 function traduzErro(msg) {
                     if (msg.includes('Length must be 7')) return 'A placa deve ter 7 caracteres.';
                     if (msg.includes('Not a valid date')) return 'Ano inválido. Use apenas números (ex: 2020).';
+                    if (msg.includes('Must be greater than or equal to')) return 'Ano deve ser maior ou igual a 1950.';
                     // Adicione outros casos conforme necessário
                     return msg;
                 }

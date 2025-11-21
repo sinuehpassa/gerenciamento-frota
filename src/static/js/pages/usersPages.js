@@ -28,6 +28,7 @@ function initAllCars() {
                         <div class="font-bold text-yellow-900 text-lg">${car.model} (${car.year})</div>
                         <div class="text-yellow-700">Placa: <span class="font-mono">${car.plate}</span></div>
                         <div class="text-yellow-700">Status: <span class="font-semibold">${car.status}</span></div>
+                        
                     `;
                     veiculosEmUsoDiv.appendChild(card);
                 });
@@ -44,6 +45,7 @@ function initAllCars() {
                         <div class="font-bold text-green-900 text-lg">${car.model} (${car.year})</div>
                         <div class="text-green-700">Placa: <span class="font-mono">${car.plate}</span></div>
                         <div class="text-green-700">Status: <span class="font-semibold">${car.status}</span></div>
+                        <button class="bg-green-700 text-white px-2 py-1 rounded hover:bg-green-600 transition">Solicitar Veículo</button>
                     `;
                     veiculosDisponiveisDiv.appendChild(card);
                 });
