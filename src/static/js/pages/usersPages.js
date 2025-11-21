@@ -12,10 +12,11 @@ function initAllCars() {
                 cars.forEach(car => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${car.model}</td>
-                        <td>${car.year}</td>
-                        <td>${car.license_plate}</td>
-                        <td>${car.status}</td>
+                    <div class="p-4 m-2 border border-gray-300 rounded-lg shadow bg-white flex flex-col gap-1 min-w-[220px]">
+                        <div class="font-bold text-blue-900 text-lg">${car.model} (${car.year})</div>
+                        <div class="text-gray-700">Placa: <span class="font-mono">${car.plate}</span></div>
+                        <div class="text-gray-700">Status: <span class="font-semibold">${car.status}</span></div>
+                    </div>
                     `;
                     carsTableBody.appendChild(row);
                 });

@@ -1,9 +1,16 @@
 async function handleResponse(response) {
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        const error = new Error(errorData.error || errorData.erros?.[0] || 'Erro ao processar requisição');
+        const error = new Error(
+            errorData.error ||
+            errorData.erros?.[0] ||
+            (errorData.errors ? Object.values(errorData.errors).flat().join('\n') : null) ||
+            'Erro ao processar requisição'
+        );
         error.error = errorData.error;
         error.erros = errorData.erros;
+        // repassa errors do backend (marshmallow)
+        if (errorData.errors) error.erros = errorData.errors;
         throw error;
     }
     return await response.json();

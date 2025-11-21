@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import EXCLUDE, Schema, fields, validate
 
 
 class SchemaSchema(Schema):
@@ -9,14 +9,19 @@ class SchemaSchema(Schema):
     email = fields.Email(required=True)
 
 class VehicleSchema(Schema):
+    class Meta:
+        unknown = EXCLUDE
+    
     id = fields.Int(dump_only=True)
-    plate = fields.Str(required=True, validate=validate.Length(min=1, max=10))
+    plate = fields.Str(required=True, validate=validate.Length(equal=7))
     model = fields.Str(required=True, validate=validate.Length(min=1, max=50))
-    year = fields.Int(required=True)
+    year = fields.Int(required=True, validate=validate.Range(min=1950)) 
     status = fields.Str(validate=validate.Length(max=20))
-    criado_em = fields.DateTime()
     
 class VehicleRequestSchema(Schema):
+    class Meta:
+        unknown = EXCLUDE
+    
     id = fields.Int(dump_only=True)
     user_id = fields.Int(required=True)
     vehicle_id = fields.Int(required=True)
@@ -35,6 +40,9 @@ class VehicleRequestSchema(Schema):
     data_request = fields.DateTime(dump_only=True)
     
 class VehicleInspectionSchema(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        
     id = fields.Int(dump_only=True)
     vehicle_id = fields.Int(required=True)
     request_id = fields.Int(allow_none=True)

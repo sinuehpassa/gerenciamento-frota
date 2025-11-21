@@ -8,7 +8,7 @@ from src.auth.datastore import user_datastore
 from src.auth import init_app as init_auth
 from src.routes.routes import routes_bp
 from src.controllers.user_controllers import users_bp
-
+from src.controllers.admin_controllers import admin_bp
 
 def create_app(config_class=ConfigDev):
     app = Flask(__name__, template_folder="templates")
@@ -27,6 +27,7 @@ def create_app(config_class=ConfigDev):
     init_auth(app)
     app.register_blueprint(routes_bp)
     app.register_blueprint(users_bp)
+    app.register_blueprint(admin_bp)
     
     # Cria todas as tabelas do banco de dados automaticamente
     with app.app_context():

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Home Root{% endblock %}
+{% block title %}Veículos{% endblock %}
 {% block head %}
   {{ super() }}
 {% endblock %}
@@ -46,5 +46,20 @@
         </table>
       </div>
     </div>
+        <div class="max-h-screen bg-white m-4 border border-gray-200 rounded-lg p-4">
+          <h1 class="text-2xl text-blue-900 font-bold">
+            Registrar Novo Veículo
+          </h1>
+          <form id="registerVehicle" class="flex mt-4 flex-col m-2 gap-4">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="plate" placeholder="Placa" class="border border-gray-300 rounded px-2 py-1 mr-2">
+            <input type="text" name="model" placeholder="Modelo" class="border border-gray-300 rounded px-2 py-1 mr-2">
+            <input type="text" name="year" placeholder="Ano" class="border border-gray-300 rounded px-2 py-1 mr-2">
+            <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-800 transition">Registrar Veículo</button>
+          </form>
+    </div>
   </div>
+
+  <script type="module" src="{{ url_for('static', filename='js/pages/adminPages.js') }}"></script>
+
 {% endblock %}
