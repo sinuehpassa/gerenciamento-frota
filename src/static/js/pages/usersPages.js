@@ -1,30 +1,78 @@
 import { fetchVehicles } from '../api/usersApi.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    initAllCars();
+    const hasVeiculosDiv = document.getElementById('veiculosEmUso') || document.getElementById('veiculosDisponiveis');
+    if (hasVeiculosDiv) {
+        initAllCars();
+    }
+    const hasVeiculosStatus = document.getElementById('veiculosStatus');
+    if (hasVeiculosStatus) {
+        initHomeCars();
+    }
 });
 
 function initAllCars() {
-    const carsTableBody = document.getElementById('veiculosDisponiveis');
+    const veiculosEmUsoDiv = document.getElementById('veiculosEmUso');
+    const veiculosDisponiveisDiv = document.getElementById('veiculosDisponiveis');
     fetchVehicles()
         .then(cars => {
-            if (Array.isArray(cars) && cars.length > 0) {
-                cars.forEach(car => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                    <div class="p-4 m-2 border border-gray-300 rounded-lg shadow bg-white flex flex-col gap-1 min-w-[220px]">
-                        <div class="font-bold text-blue-900 text-lg">${car.model} (${car.year})</div>
-                        <div class="text-gray-700">Placa: <span class="font-mono">${car.plate}</span></div>
-                        <div class="text-gray-700">Status: <span class="font-semibold">${car.status}</span></div>
-                    </div>
+            const { vehicles = [], message } = cars || {};
+            if (veiculosEmUsoDiv) veiculosEmUsoDiv.innerHTML = '';
+            if (veiculosDisponiveisDiv) veiculosDisponiveisDiv.innerHTML = '';
+            const emUso = vehicles.filter(car => car.status === 'em uso');
+            if (emUso.length > 0) {
+                emUso.forEach(car => {
+                    const card = document.createElement('div');
+                    card.className = 'p-4 m-2 border max-w-[30vh] border-yellow-300 rounded-lg shadow bg-white flex flex-col gap-1';
+                    card.innerHTML = `
+                        <div class="font-bold text-yellow-900 text-lg">${car.model} (${car.year})</div>
+                        <div class="text-yellow-700">Placa: <span class="font-mono">${car.plate}</span></div>
+                        <div class="text-yellow-700">Status: <span class="font-semibold">${car.status}</span></div>
                     `;
-                    carsTableBody.appendChild(row);
+                    veiculosEmUsoDiv.appendChild(card);
                 });
-            } else if (cars.message) {
-                carsTableBody.innerHTML = `<tr><td colspan="5">${cars.message}</td></tr>`;
+            } else if (message) {
+                veiculosEmUsoDiv.innerHTML = `<div>${message}</div>`;
+            }
+
+            const disponiveis = vehicles.filter(car => car.status === 'disponível');
+            if (disponiveis.length > 0) {
+                disponiveis.forEach(car => {
+                    const card = document.createElement('div');
+                    card.className = 'p-4 m-2 border max-w-[30vh] border-green-300 rounded-lg shadow bg-white flex flex-col gap-1';
+                    card.innerHTML = `
+                        <div class="font-bold text-green-900 text-lg">${car.model} (${car.year})</div>
+                        <div class="text-green-700">Placa: <span class="font-mono">${car.plate}</span></div>
+                        <div class="text-green-700">Status: <span class="font-semibold">${car.status}</span></div>
+                    `;
+                    veiculosDisponiveisDiv.appendChild(card);
+                });
+            } else if (message) {
+                veiculosDisponiveisDiv.innerHTML = `<div>${message}</div>`;
             }})
         .catch(error => {
-            carsTableBody.innerHTML = `<tr><td colspan="5">Erro ao buscar veículos</td></tr>`;
+            if (veiculosEmUsoDiv) veiculosEmUsoDiv.innerHTML = `<div>Erro ao buscar veículos</div>`;
+            if (veiculosDisponiveisDiv) veiculosDisponiveisDiv.innerHTML = `<div>Erro ao buscar veículos</div>`;
             console.error('Erro ao buscar veículos:', error);
         });}
 
+
+
+function initHomeCars() {
+    const veiculosStatus = document.getElementById('veiculosStatus');
+    fetchVehicles()
+        .then(cars => {
+            const { disponivel = 0, em_uso = 0 } = cars || {};
+            if (veiculosStatus) {
+                veiculosStatus.innerHTML = `
+                    <div class="text-green-800 font-bold">Veículos disponíveis: ${disponivel}</div>
+                    <div class="text-yellow-600 font-bold">Veículos em uso: ${em_uso}</div>
+                    <a href="/users/veiculos" class="text-blue-800 bg-blue-100 rounded border border-blue-800 px-2 py-1 inline-block mt-2">Ver todos os veículos</a>
+                `;
+            }
+        })
+        .catch(error => {
+            if (veiculosStatus) veiculosStatus.innerHTML = '<div>Erro ao buscar status dos veículos</div>';
+            console.error('Erro ao buscar status dos veículos:', error);
+        });
+}   

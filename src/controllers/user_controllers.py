@@ -10,12 +10,19 @@ users_bp = Blueprint('users', __name__, url_prefix='/users')
 @users_bp.route('/all/vehicles', methods=['GET'])
 @login_required
 @roles_accepted('admin', 'user')
-def list_all_users():
+def list_all_vehicles():
     car_service = CarService(db.session, current_user)
     cars = car_service.list_all()
     schema = VehicleSchema(many=True)
-    
-    if not cars:
-        return jsonify({"message": "Nenhum veículo encontrado"}), 404
-    
-    return jsonify(schema.dump(cars))
+    vehicles = schema.dump(cars)
+
+    em_uso = len([v for v in vehicles if v['status'] == 'em uso'])
+    disponivel = len([v for v in vehicles if v['status'] == 'disponível'])
+    em_manutencao = len([v for v in vehicles if v['status'] == 'em manutenção'])
+
+    return jsonify({
+        "em_uso": em_uso,
+        "disponivel": disponivel,
+        "em_manutencao": em_manutencao,
+        "vehicles": vehicles
+    })
