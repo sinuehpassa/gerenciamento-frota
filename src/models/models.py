@@ -29,6 +29,14 @@ class User(db.Model, UserMixin):
 
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
+    @property
+    def is_admin(self):
+        return any(role.name == 'admin' for role in self.roles)
+
+    @property
+    def is_user(self):
+        return any(role.name == 'user' for role in self.roles)
+
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     plate = db.Column(db.String(10), unique=True, nullable=False)
@@ -39,7 +47,7 @@ class Vehicle(db.Model):
 
 class VehicleRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
     request_date = db.Column(db.DateTime, default=datetime.utcnow)
     start_date = db.Column(db.DateTime, nullable=False)
@@ -47,7 +55,7 @@ class VehicleRequest(db.Model):
     purpose = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(20), default='pendente')  # pendente, aprovado, rejeitado
     return_date = db.Column(db.DateTime, nullable=True)
-    approved_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    approved_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     
     # Novos campos para horários e autorização
     pickup_time = db.Column(db.Time, nullable=True)  # Horário de retirada
@@ -67,7 +75,7 @@ class VehicleInspection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
     request_id = db.Column(db.Integer, db.ForeignKey('vehicle_request.id'), nullable=True)
-    inspector_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    inspector_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     inspection_date = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Dados básicos
