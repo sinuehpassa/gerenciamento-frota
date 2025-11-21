@@ -16,6 +16,30 @@ def home_root():
 def home_admins():
     return render_template("admin_templates/home.html", message="Bem-vindo", username=current_user.username)
 
+@routes_bp.route("/admin/veiculos", methods=['GET'])
+@login_required
+@roles_accepted('admin', 'root')
+def admin_vehicles():
+    return render_template("admin_templates/vehicles.html", username=current_user.username)
+
+@routes_bp.route("/admin/solicitacoes", methods=['GET'])
+@login_required
+@roles_accepted('admin', 'root')
+def admin_requests():
+    return render_template("admin_templates/requests.html", username=current_user.username)
+
+@routes_bp.route("/admin/relatorios", methods=['GET'])
+@login_required
+@roles_accepted('admin', 'root')
+def admin_reports():
+    return render_template("admin_templates/reports.html", username=current_user.username)
+
+@routes_bp.route("/admin/usuarios", methods=['GET'])
+@login_required
+@roles_accepted('admin', 'root')
+def admin_users():
+    return render_template("admin_templates/users.html", username=current_user.username)
+
 @routes_bp.route("/users", methods=['GET'])
 @login_required
 @roles_accepted('user', 'admin', 'root')
