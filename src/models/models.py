@@ -65,6 +65,8 @@ class VehicleRequest(db.Model):
     # Campos para quilometragem
     km_inicial = db.Column(db.Integer, nullable=True)
     km_final = db.Column(db.Integer, nullable=True)
+
+    data_request = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Relacionamentos
     vehicle = db.relationship('Vehicle', foreign_keys=[vehicle_id], backref='vehicle_requests')
@@ -153,11 +155,13 @@ class VehicleInspection(db.Model):
     observations = db.Column(db.Text, nullable=True)
     inspection_type = db.Column(db.String(20), nullable=False)  # entrega, devolucao
     
+    data_request = db.Column(db.DateTime, default=datetime.utcnow)
+
     # Relacionamentos
     vehicle = db.relationship('Vehicle', backref='inspections')
     request = db.relationship('VehicleRequest', backref='inspections')
     inspector = db.relationship('User', backref='inspections')
-
+    
 
 def create_default_roles():
     default_roles = ['admin', 'user', 'root']

@@ -32,6 +32,7 @@ class VehicleRequestSchema(Schema):
     authorized_by_name = fields.Str(allow_none=True, validate=validate.Length(max=100))
     km_inicial = fields.Int(allow_none=True)
     km_final = fields.Int(allow_none=True)
+    data_request = fields.DateTime(dump_only=True)
     
 class VehicleInspectionSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -114,3 +115,4 @@ class VehicleInspectionSchema(Schema):
 
     observations = fields.Str(allow_none=True)
     inspection_type = fields.Str(required=True)
+    data_request = fields.DateTime(dump_only=True)
