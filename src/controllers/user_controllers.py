@@ -12,17 +12,10 @@ users_bp = Blueprint('users', __name__, url_prefix='/users')
 @roles_accepted('admin', 'user')
 def list_all_vehicles():
     car_service = CarService(db.session, current_user)
-    cars = car_service.list_all()
+    result = car_service.list_all()
     schema = VehicleSchema(many=True)
-    vehicles = schema.dump(cars)
-
-    em_uso = len([v for v in vehicles if v['status'] == 'em uso'])
-    disponivel = len([v for v in vehicles if v['status'] == 'disponível'])
-    em_manutencao = len([v for v in vehicles if v['status'] == 'em manutenção'])
 
     return jsonify({
-        "em_uso": em_uso,
-        "disponivel": disponivel,
-        "em_manutencao": em_manutencao,
-        "vehicles": vehicles
+        "vehicles": schema.dump(result["vehicles"]),
+        "counts": result["counts"]
     })

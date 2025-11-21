@@ -4,10 +4,19 @@ class CarService():
     def __init__(self, db_session, current_user):
         self.db_session = db_session
         self.current_user = current_user
+    
     def list_all(self):
-        return self.db_session.query(Vehicle).all()
+        return {
+            "vehicles": self.db_session.query(Vehicle).all(),  # lista completa
+            "counts": self.db_session.query(Vehicle).count(),  # número total
+            "em_uso": self.db_session.query(Vehicle).filter_by(status="em uso").all(),
+            "disponiveis": self.db_session.query(Vehicle).filter_by(status="disponível").all(),
+            "em_manutencao": self.db_session.query(Vehicle).filter_by(status="em manutenção").all()
+        }
 
-# class ServiceService():
+            
+        
+        
 #     def __init__(self, db_session, current_user):
 #         self.db_session = db_session
 #         self.current_user = current_user
