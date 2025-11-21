@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}Home Root{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+{% block page_content %}
+  <h1>{{ message }}, {{ username }}</h1>
+{% endblock %}

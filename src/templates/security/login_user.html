@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}login{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+{% block page_content %}
+<div class="flex flex-col items-center justify-center w-full min-h-[800px]">
+    <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-6 flex flex-col gap-4">
+        <div class="center">
+            <div class="container">
+                <div class="logo-container">
+                    <img src="static/images/logomontagem.jpeg" alt="Logo" class="logo w-90 mx-auto block mb-8 mt-8">
+                </div>
+                    <h2 class="text-2xl font-bold text-center text-blue-900 mb-4">Login</h2>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="{{ url_for_security('login') }}" class="flex flex-col gap-4">
+                        {{ login_user_form.hidden_tag() }}
+                        <div class="flex flex-col gap-1">
+                            <label for="email" class="text-blue-900 font-medium">Email:</label>
+                            {{ login_user_form.email(class="w-full rounded border border-blue-200 p-3 text-gray-900 placeholder:text-blue-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-200 focus:outline-none") }}
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="password" class="text-blue-900 font-medium">Senha:</label>
+                            {{ login_user_form.password(class="w-full rounded border border-blue-200 p-3 text-gray-900 placeholder:text-blue-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-200 focus:outline-none") }}
+                        </div>
+                        <button id="btnEntrar" type="submit" class="w-full rounded bg-blue-900 p-3 text-white font-medium hover:bg-blue-400 transition">Entrar</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="static/js/loginForm/loginForm.js"></script>
+{% endblock %}
