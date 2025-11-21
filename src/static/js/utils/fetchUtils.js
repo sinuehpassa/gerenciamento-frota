@@ -1,3 +1,14 @@
+async function handleResponse(response) {
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const error = new Error(errorData.error || errorData.erros?.[0] || 'Erro ao processar requisição');
+        error.error = errorData.error;
+        error.erros = errorData.erros;
+        throw error;
+    }
+    return await response.json();
+}
+
 export async function postData(url, data, headers = {}) {
     try {
         const response = await fetch(url, {
@@ -8,20 +19,12 @@ export async function postData(url, data, headers = {}) {
             },
             body: JSON.stringify(data),
         });
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            const error = new Error(errorData.error || errorData.erros?.[0] || 'Erro ao processar requisição');
-            error.error = errorData.error;
-            error.erros = errorData.erros;
-            throw error;
-        }
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
         console.error('Fetch error:', error);
         throw error;
     }
 }
-
 
 export async function getData(url, headers = {}) {
     try {
@@ -32,14 +35,7 @@ export async function getData(url, headers = {}) {
                 ...headers,
             },
         });
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            const error = new Error(errorData.error || errorData.erros?.[0] || 'Erro ao processar requisição');
-            error.error = errorData.error;
-            error.erros = errorData.erros;
-            throw error;
-        }
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
         console.error('Fetch error:', error);
         throw error;
@@ -56,14 +52,7 @@ export async function putData(url, data, headers = {}) {
             },
             body: JSON.stringify(data),
         });
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            const error = new Error(errorData.error || errorData.erros?.[0] || 'Erro ao processar requisição');
-            error.error = errorData.error;
-            error.erros = errorData.erros;
-            throw error;
-        }
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
         console.error('Fetch error:', error);
         throw error;
@@ -79,14 +68,7 @@ export async function deleteData(url, headers = {}) {
                 ...headers,
             },
         });
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            const error = new Error(errorData.error || errorData.erros?.[0] || 'Erro ao processar requisição');
-            error.error = errorData.error;
-            error.erros = errorData.erros;
-            throw error;
-        }
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
         console.error('Fetch error:', error);
         throw error;
