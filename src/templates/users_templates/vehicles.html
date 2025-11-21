@@ -5,10 +5,22 @@
 {% endblock %}
 
 {% block page_content %}
-  <div class="min-h-[50vh] bg-blue-800">
+  <div class="min-h-[50vh]">
+    <h1 class="text-3xl p-6">
+      Veículos Disponíveis 
+    </h1>
+    <div id="veiculosDisponiveis" class="m-6">
 
+    </div>
   </div>
-  <div class="min-h-[50vh] bg-blue-400">
+  <div class="min-h-[50vh]">
+    <h1 class="text-3xl p-6">
+      Veículos em Uso 
+    </h1>
+    <div id="veiculosEmUso" class="m-6">
 
+    </div>
   </div>
+
+<script type="module" src="{{ url_for('static', filename='js/pages/usersPages.js') }}"></script>
 {% endblock %}

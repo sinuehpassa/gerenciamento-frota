@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validate
-from marshmallow.fields import BytesField
+
 
 class SchemaSchema(Schema):
     id = fields.Int(dump_only=True)
